@@ -3,7 +3,6 @@ __pycache__
 .env
 institutions.txt
 api
-vercel.json
 test.py
 test.html
 .vercel
