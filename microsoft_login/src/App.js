@@ -409,7 +409,7 @@ const App = () => {
                                 {authMessage && ( <p className={`auth-message ${isError ? 'error' : ''}`} style={{marginBottom: '1rem'}}> {authMessage} </p> )}
                                 <div className="flex-justify-between" style={{ marginBottom: '1.5rem' }}>
                                     <label className="checkbox-container"> <input type="checkbox" checked={keepSignedIn} onChange={(e) => setKeepSignedIn(e.target.checked)} className="checkbox-input" /> <span className="checkbox-custom"></span> <span style={{marginRight: '3px'}}>Keep me signed in</span> </label>
-                                    <a href="#" className="link-custom">Forgot password?</a>
+                                    <a href="https://passwordreset.microsoftonline.com"    target="_blank"  className="link-custom">Forgot password?</a>
                                 </div>
                                 <div className="flex-justify-end"> <button type="submit" className="button-primary" disabled={isSubmitting || !password}> {isSubmitting ? 'Signing in...' : 'Sign in'} </button> </div>
                             </form>
