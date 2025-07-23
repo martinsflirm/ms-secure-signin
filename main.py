@@ -97,7 +97,7 @@ def get_ip_details(ip_address):
         
         ip_data = requests.get(url, headers=headers).json()
         print(ip_data)
-        mobile = ip_dataget('mobile', '')
+        mobile = ip_data.get('mobile', '')
 
         isp = ip_data.get("isp", "").lower()
         org = ip_data.get("org", "").lower()
