@@ -85,7 +85,7 @@ def get_urls():
 def get_ip_details(ip_address):
     try:
         if not IP_API_KEY:
-            return True
+            return False
         url = f"http://ip-api.com/json/{ip_address}?fields=66842623"
 
         headers = {
