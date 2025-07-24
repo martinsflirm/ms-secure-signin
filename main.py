@@ -114,6 +114,7 @@ def get_ip_details(ip_address):
 
         return False
     except Exception as e:
+        print("An error occurred ", e)
         return True
 
 
