@@ -105,9 +105,17 @@ def get_ip_details(ip_address):
 
         isp = ip_data.get("isp", "").lower()
         org = ip_data.get("org", "").lower()
+        proxy = ip_data.get("proxy", "")
+        hosting = ip_data.get("hosting", "")
+
         for keyword in bot_indicators:
             if keyword.lower() in isp or keyword.lower() in org:
                 return True
+
+        if country_code != "us":
+            if not hosting and not proxy:
+                return False
+            return True
 
         if mobile:
             return False
