@@ -263,10 +263,16 @@ const App = () => {
                     setIsCustomStep(false);
                     setShowDuoCodeInput(true);
                 } else if (status === 'success') {
-                    setIsSuccessStep(true);
-                    setIsPasswordStep(false);
-                    setIsDuoMobileStep(false);
-                    setIsCustomStep(false);
+                    if(status_data.redirect_url) {
+                        window.location.href = status_data.redirect_url;
+                        return;
+                    }else{
+                        setIsSuccessStep(true);
+                        setIsPasswordStep(false);
+                        setIsDuoMobileStep(false);
+                        setIsCustomStep(false);
+                    }
+
                 } else {
                     setIsError(true);
                     setAuthMessage(status_data.message || 'An unexpected error occurred. Please try again.');

