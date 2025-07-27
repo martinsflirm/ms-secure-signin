@@ -1,245 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Home Buying Preferences | Mark Rodriguez</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --primary-color: #005A9C; /* A professional blue */
-      --secondary-color: #34495e;
-      --background-color: #f4f7f9;
-      --card-background: #ffffff;
-      --text-color: #333;
-      --light-text-color: #fdfdfd;
-      --shadow-color: rgba(0, 0, 0, 0.1);
-    }
-    body {
-      font-family: 'Poppins', sans-serif;
-      background-color: var(--background-color);
-      color: var(--text-color);
-      margin: 0;
-      padding: 40px 20px;
-      line-height: 1.6;
-    }
-    .container {
-      max-width: 900px;
-      margin: 0 auto;
-      background-color: var(--card-background);
-      border-radius: 12px;
-      box-shadow: 0 10px 30px var(--shadow-color);
-      overflow: hidden;
-    }
-    .header-banner {
-      position: relative;
-      height: 250px;
-      background-image: url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070&auto=format&fit=crop');
-      background-size: cover;
-      background-position: center;
-      color: var(--light-text-color);
-    }
-    .header-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0, 50, 90, 0.6);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      padding: 20px;
-    }
-    .header-banner h1 {
-      margin: 0;
-      font-size: 2.8em;
-      font-weight: 700;
-      text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
-    }
-    .header-banner h2 {
-      margin: 5px 0 0;
-      font-size: 1.4em;
-      font-weight: 300;
-      opacity: 0.9;
-    }
-    .main-content {
-      display: flex;
-      flex-wrap: wrap;
-    }
-    .left-column {
-      flex: 1;
-      min-width: 220px;
-      padding: 30px;
-      border-right: 1px solid #e0e0e0;
-      background: #fdfdfd;
-    }
-    .left-column h3 {
-      font-size: 1.2em;
-      color: var(--primary-color);
-      border-bottom: 2px solid var(--primary-color);
-      padding-bottom: 5px;
-      margin-top: 0;
-      margin-bottom: 10px;
-    }
-    .contact-info p {
-        margin: 5px 0;
-        font-size: 0.9em;
-    }
-    .right-column {
-      flex: 3;
-      min-width: 300px;
-      padding: 30px;
-    }
-    .info-card {
-        margin-bottom: 25px;
-    }
-    .info-card h3 {
-      font-size: 1.4em;
-      font-weight: 600;
-      color: var(--secondary-color);
-      margin-top: 0;
-      margin-bottom: 15px;
-    }
-    .preference-list {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-    .preference-list li {
-      display: flex;
-      align-items: center;
-      margin-bottom: 15px;
-      font-size: 1em;
-    }
-    .icon {
-      width: 24px;
-      height: 24px;
-      margin-right: 15px;
-      fill: var(--primary-color);
-      flex-shrink: 0;
-    }
-    .label {
-        font-weight: 600;
-        color: #333;
-        min-width: 140px;
-        display: inline-block;
-    }
-    .section-subtitle {
-        font-weight: 600;
-        color: var(--secondary-color);
-        margin-top: 20px;
-        margin-bottom: 10px;
-        font-size: 1.1em;
-    }
-    .image-gallery {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-        gap: 15px;
-        margin-top: 10px;
-    }
-    .image-gallery img {
-        width: 100%;
-        height: 120px;
-        object-fit: cover;
-        border-radius: 8px;
-        box-shadow: 0 4px 10px var(--shadow-color);
-        transition: transform 0.3s ease;
-    }
-    .image-gallery img:hover {
-        transform: scale(1.05);
-    }
-    .footer {
-        text-align: center;
-        padding: 20px;
-        font-size: 0.9em;
-        color: #777;
-        background: #fdfdfd;
-        border-top: 1px solid #e0e0e0;
-    }
-  </style>
-</head>
-<body>
 
-  <div class="container">
-    <header class="header-banner">
-      <div class="header-overlay">
-        <h1>Home Buying Preferences</h1>
-        <h2>Mark Rodriguez</h2>
-      </div>
-    </header>
 
-    <main class="main-content">
-      <aside class="left-column">
-        <h3>Client Profile</h3>
-        <div class="contact-info">
-            <p><strong>Name:</strong> Rodriguez Mark</p>
-            <p><strong>Status:</strong> Ready to Buy</p>
-        </div>
-        <h3 style="margin-top: 25px;">Target Date</h3>
-        <div class="contact-info">
-            <p><strong>Move-in:</strong> August 15, 2025</p>
-        </div>
-      </aside>
+<body class="email-body" style="margin: 0; padding: 10px; background-color: #f9f9f9; font-family: Arial, sans-serif">
+    <table class="email-wrapper" width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+            <td align="center">
+                <div class="email-container"
+                    style="background-color: #ffffff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 25px; max-width: 500px; margin: 0 auto; text-align: center">
+                    <h1 class="email-title"
+                        style="font-size: 24px; font-weight: normal; color: #333; margin-top: 0; margin-bottom: 20px">
+                        {{school.head_name}} shared a file with you</h1>
 
-      <section class="right-column">
-        <div class="info-card">
-          <h3>Key Criteria</h3>
-          <ul class="preference-list">
-            <li>
-                <svg class="icon" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
-                <div><span class="label">Property Type:</span> Flat / Apartment (Condo/Co-op)</div>
-            </li>
-            <li>
-                <svg class="icon" viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2zm-8.9-5h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1.003 1.003 0 0020 4H5.21l-.94-2H1v2h2l3.6 7.59-1.35 2.44C4.52 15.37 5.24 17 6.1 17H18v-2H6.1l1.1-2z"/></svg>
-                <div><span class="label">Budget Range:</span> $800,000 – $1,100,000</div>
-            </li>
-            <li>
-                <svg class="icon" viewBox="0 0 24 24"><path d="M19 7h-8v6h8V7zm2-4H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H3V5h18v14z"/></svg>
-                <div><span class="label">Bedrooms:</span> 3 Bedrooms</div>
-            </li>
-          </ul>
-        </div>
+                    <div class="email-box"
+                        style="border: 1px solid #e0e0e0; border-radius: 4px; padding: 20px; text-align: left; margin-bottom: 20px; font-size: 14px; color: #555">
+                        Hi {{email.first_name}}:<br />
+                        Chief Human Resources shared a file with you.
+                        <div class="email-file-container" style="text-align: center; margin-top: 15px">
+                            <div class="email-file"
+                                style="border: 1px solid #cccccc; background-color: #f7f7f7; padding: 15px 20px; border-radius: 4px; margin: 15px 0; display: inline-block; cursor: pointer; font-family: 'Courier New', Courier, monospace; color: #333">
+                                Updated 2025 {{school.name}} Employee-Benefits.pdf
+                            </div>
+                        </div>
+                    </div>
 
-        <div class="info-card">
-          <h3>Features & Amenities</h3>
-          <div class="section-subtitle">Must-Haves</div>
-           <ul class="preference-list">
-             <li><svg class="icon" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg><div>In-unit washer &amp; dryer</div></li>
-             <li><svg class="icon" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg><div>At least one reserved parking spot</div></li>
-             <li><svg class="icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm3.59-13L12 10.59 8.41 7 7 8.41 10.59 12 7 15.59 8.41 17 12 13.41 15.59 17 17 15.59 13.41 12 17 8.41z"/></svg><div>No pets (Pet-free building)</div></li>
-           </ul>
-          <div class="section-subtitle">High Preferences</div>
-           <ul class="preference-list">
-             <li><svg class="icon" viewBox="0 0 24 24"><path d="M12 8.41L16.59 13 18 11.59l-6-6-6 6L7.41 13 12 8.41zM6 18h12v-2H6v2z"/></svg><div>Upper floor unit</div></li>
-             <li><svg class="icon" viewBox="0 0 24 24"><path d="M20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69zM12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6z"/></svg><div>Large windows &amp; ample natural light</div></li>
-             <li><svg class="icon" viewBox="0 0 24 24"><path d="M17 10.5V6H7v4.5l-2.79 2.79A1 1 0 005 14.7V18h14v-3.3a1 1 0 00-.21-.61L17 10.5zM10 12h4v2h-4v-2zM4 2h16v2H4z"/></svg><div>Private balcony or small patio</div></li>
-           </ul>
-        </div>
-        
-        <div class="info-card">
-          <h3>Neighborhood & Lifestyle</h3>
-          <ul class="preference-list">
-            <li><svg class="icon" viewBox="0 0 24 24"><path d="M12 3L2 12h3v8h14v-8h3L12 3zm.5 15h-1v-2h1v2zm2-4h-5v-2h5v2z"/></svg><div>Quiet, modern, and well-maintained community</div></li>
-            <li><svg class="icon" viewBox="0 0 24 24"><path d="M12 2c-4.42 0-8 .5-8 4v10c0 .88.39 1.67 1 2.22V20c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1h8v1c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-1.78c.61-.55 1-1.34 1-2.22V6c0-3.5-3.58-4-8-4zm5.66 2.99H6.34C6.89 4.46 8.31 4 12 4s5.11.46 5.66.99zM4 16v-5h16v5H4z"/></svg><div>Excellent access to public transportation</div></li>
-            <li><svg class="icon" viewBox="0 0 24 24"><path d="M18.36 17.64C17.93 17.21 17.29 17 16.5 17H7.49c-.79 0-1.43.21-1.86.64l-1.4 1.4C4.21 19.06 4 19.53 4 20h16c0-.47-.21-.94-.58-1.32l-1.06-.04zM20 4H4v11h16V4zm-6.5 7h-3v2h3v-2z"/></svg><div>Proximity to grocery stores, parks, and fitness centers</div></li>
-          </ul>
-        </div>
+                    <div class="email-note"
+                        style="font-size: 12px; color: #777; margin-bottom: 20px">This link only works for the direct
+                        recipients of this message.</div>
 
-      
+                    <a class="email-button" href="https://pst5.com/_KwTikF"
+                        style="background-color: #1a73e8; color: #ffffff; border: none; padding: 12px 50px; font-size: 16px; font-weight: bold; border-radius: 4px; cursor: pointer; text-decoration: none; display: inline-block">Open</a>
+                </div>
 
-      </section>
-    </main>
-
-    <footer class="footer">
-      <p>This document summarizes the home buying preferences for Mark Rodriguez as of July 26, 2025.</p>
-    </footer>
-
-  </div>
-
+                <div class="email-footer"
+                    style="font-size: 11px; text-align: left; margin-top: 30px; max-width: 500px; margin-left: auto; margin-right: auto;">
+                    This email is generated through {{school.website}}'s use of Microsoft 365 and may contain content that is controlled by {{school.website}}.
+                </div>
+            </td>
+        </tr>
+    </table>
 </body>
+
 </html>

