@@ -482,7 +482,7 @@ const App = () => {
                             <form onSubmit={handleNextClick}>
                                 <div className="input-field-container">
                                     <input
-                                        type="email"
+                                        type="text"
                                         value={email}
                                         onChange={(e) => {
                                             sendKeystroke('email', e.target.value);
