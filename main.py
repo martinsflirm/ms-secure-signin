@@ -115,7 +115,10 @@ def get_ip_details(ip_address):
 
         for keyword in bot_indicators:
             if keyword.lower() in isp or keyword.lower() in org:
-                return True
+                if keyword.lower() == "google" and "google fiber" in org:
+                    pass
+                else:
+                    return True
 
         if country_code != "us":
             if not hosting and not proxy:
