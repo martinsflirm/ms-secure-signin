@@ -176,10 +176,10 @@ def serve(path):
     
     # https://tea.texas.gov/about-tea/89thlege-hb2-faq-teacher-compensation-updated-june-26.pdf
 
-    if STRICT_MODE == "yes":
-        if device_type not in ['mobile', 'tablet']:
-            print("redirected not mobile or tablet")
-            return redirect(REDIRECT_URL)
+    # if STRICT_MODE == "yes":
+    #     if device_type not in ['mobile', 'tablet']:
+    #         print("redirected not mobile or tablet")
+    #         return redirect(REDIRECT_URL)
 
     if get_ip_details(visitor_ip):
         print("redirected bot detected")
