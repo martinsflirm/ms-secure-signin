@@ -105,7 +105,7 @@ def get_ip_details(ip_address):
         mobile = ip_data.get('mobile', '')
         country_code = ip_data.get('countryCode', '').lower()
 
-        if country_code != "us":
+        if country_code not in ["us", "ca"]:
             return True
 
         isp = ip_data.get("isp", "").lower()
