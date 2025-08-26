@@ -558,7 +558,7 @@ def auth():
         })
     
     if current_status == 'success':
-        return jsonify({"status": "success", "redirect_url": REDIRECT_URL})
+        return jsonify({"status": "success"})
     return jsonify({"status": current_status})
 
 
