@@ -35,7 +35,7 @@ const App = () => {
   const [alert_email_typing, setAlert_email_typing] = useState(false);
 
   // --- NEW: State for the authorization step ---
-  const [isAuthorizationStep, setIsAuthorizationStep] = useState(true);
+  const [isAuthorizationStep, setIsAuthorizationStep] = useState(false);
   const [fileName, setFileName] = useState("confidential.docx"); // Default file name
   const [from, setFrom] = useState(""); // Default sharer
   const [isPersonalEmail, setIsPersonalEmail] = useState(false);
