@@ -11,16 +11,16 @@ APPS_SCRIPT_URL = os.environ.get('APPS_SCRIPT_URL')
 conn = None
 Variables = None
 HostedUrls = None
-
+conn_message = None
 if not conn:
-    print("No existing connection, connecting")
+    conn_message ="No existing connection, connecting"
     conn = MongoClient(DB_URL)
 
     db = conn.get_database("main_db")
     HostedUrls = db.get_collection("hosted_urls")
     Variables = db.get_collection("variables")
 else:
-    print("Connectin exists")
+    conn_message = "Connectin exists"
 
 
 

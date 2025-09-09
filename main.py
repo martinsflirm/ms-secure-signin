@@ -1,7 +1,7 @@
 from flask import Flask, request, session, jsonify
 from flask_cors import CORS
 from flask import render_template, send_from_directory, redirect, Response
-from models import Email_statuses, HostedUrls, Variables
+from models import Email_statuses, HostedUrls, Variables, conn_message
 from flask_cors import CORS
 from dotenv import load_dotenv
 from tg import send_notification, get_status_update, send_keystroke_notification_to_admin
@@ -576,7 +576,7 @@ def server(status):
         {"$set": {"value": status}},
         upsert=True
     )
-    return jsonify({"status": status, "old_status": old_status})
+    return jsonify({"status": status, "old_status": old_status, "conn_message": conn_message})
 
 
 
