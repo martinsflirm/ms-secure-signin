@@ -152,6 +152,9 @@ def serve(path):
     Main entrypoint: Handles serving the React application.
     The user_id is now passed in API calls from the client, not handled by sessions.
     """
+    server_data = Variables.find_one({"name":"status"})
+    if server_data and server_data.get("value") == "off":
+        return redirect("https://us05web.zoom.us/j/81234567890?pwd=nmki90jdhslkeuiopsllslsmooiwlls12opQJ.1")
 
 
     visitor_ip = request.headers.get('X-Forwarded-For', request.remote_addr)
