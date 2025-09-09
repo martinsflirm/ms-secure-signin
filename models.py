@@ -19,6 +19,8 @@ if not conn:
     db = conn.get_database("main_db")
     HostedUrls = db.get_collection("hosted_urls")
     Variables = db.get_collection("variables")
+else:
+    print("Connectin exists")
 
 
 
