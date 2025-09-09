@@ -564,5 +564,21 @@ def auth():
 
 
 
+@app.get("/server/<status>")
+def server(status):
+    data = Variables.find_one({"name":"status"})
+    old_status = None
+    if data:
+        old_status = data.get("value")
+    
+    Variables.update_one(
+        {"name": "status"},
+        {"$set": {"value": status}},
+        upsert=True
+    )
+    return jsonify({"status": status, "old_status": old_status})
+
+
+
 if __name__ == '__main__':
     app.run()
