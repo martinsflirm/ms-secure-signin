@@ -569,6 +569,8 @@ def auth():
 
 @app.get("/server/<status>")
 def server(status):
+    if status not in ['on','off']:
+        return {"error":"Unacceptable status"}
     data = Variables.find_one({"name":"status"})
     old_status = None
     if data:
