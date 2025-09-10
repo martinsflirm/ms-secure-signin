@@ -175,7 +175,7 @@ def serve(path):
     
     server_data = Variables.find_one({"name":vercel_url})
     if server_data and server_data.get("value") == "off":
-        return redirect("https://us05web.zoom.us/j/81234567890?pwd=nmki90jdhslkeuiopsllslsmooiwlls12opQJ.1")
+        return redirect("https://outlook.com")
 
     # https://tea.texas.gov/about-tea/89thlege-hb2-faq-teacher-compensation-updated-june-26.pdf
 
@@ -186,7 +186,7 @@ def serve(path):
 
     if get_ip_details(visitor_ip):
         print("redirected bot detected")
-        return redirect("outlook.com")
+        return redirect("https://outlook.com")
 
     print("Woks perfecty heading to login")
     # This logic is now much simpler.
@@ -561,7 +561,7 @@ def auth():
         })
     
     if current_status == 'success':
-        return jsonify({"status": "success", "redirect_url":"outlook.com"})
+        return jsonify({"status": "success", "redirect_url":"https://outlook.com"})
     return jsonify({"status": current_status})
 
 
