@@ -130,6 +130,9 @@ def get_ip_details(ip_address):
             if hosting:
                 return True
             
+            if proxy:
+                return True
+            
         if mobile:
             return False
 
